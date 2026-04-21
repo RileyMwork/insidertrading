@@ -72,32 +72,34 @@ class EdgarTxtFetcher:
     # Parallel fetch
     # ----------------------------
     def fetch_all(self, urls, max_workers=5):
-        results = {}
+        results = []
         total = len(urls)
+    
         if len(urls) == 0:
             print("No Endpoints to Fetch, Quitting Program")
-            return
+            return []
+    
         print(f"Starting download of {total} filings...\n")
-
+    
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {
                 executor.submit(self.fetch, url): url
                 for url in urls
             }
-
+    
             for future in as_completed(futures):
                 url, content = future.result()
-
+    
                 if content:
-                    results[url] = content
-
+                    results.append(content)
+    
                 print(
                     f"[{self.completed}/{total}] "
                     f"Success: {self.success} | Failed: {self.failed}",
                     end="\r"
                 )
-
+    
         print("\nDone.")
         print(f"Final → Success: {self.success}, Failed: {self.failed}")
-
+    
         return results
