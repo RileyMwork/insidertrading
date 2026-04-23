@@ -1,16 +1,12 @@
+import requests
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from infrastructure.api.edgar_api.rate_limiter import RateLimiter
-
+from .rate_limiter import RateLimiter
 
 class EdgarTxtFetcher:
     def __init__(self, rate_per_sec=1):
-        # ----------------------------
-        # HTTP session setup
-        # ----------------------------
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "Riley Martin rileymartin523@gmail.com",
@@ -26,25 +22,15 @@ class EdgarTxtFetcher:
         adapter = HTTPAdapter(max_retries=retries)
         self.session.mount("https://", adapter)
 
-        # ----------------------------
-        # GLOBAL rate limiter (shared across ALL threads)
-        # ----------------------------
         self.rate_limiter = RateLimiter(rate_per_sec=rate_per_sec)
 
-        # ----------------------------
-        # Thread-safe progress tracking
-        # ----------------------------
         self.lock = threading.Lock()
         self.completed = 0
         self.success = 0
         self.failed = 0
 
-    # ----------------------------
-    # Single fetch
-    # ----------------------------
     def fetch(self, url):
         try:
-            # GLOBAL throttling across all threads
             self.rate_limiter.acquire()
 
             response = self.session.get(url, timeout=10)
@@ -68,9 +54,6 @@ class EdgarTxtFetcher:
                 self.failed += 1
             return url, None
 
-    # ----------------------------
-    # Parallel fetch
-    # ----------------------------
     def fetch_all(self, urls, max_workers=5):
         results = []
         total = len(urls)

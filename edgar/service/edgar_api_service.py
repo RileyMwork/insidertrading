@@ -1,10 +1,10 @@
-from edgar.api.edgar_api_base import EdgarApiBase
-from edgar.api.edgar_txt_fetcher import EdgarTxtFetcher
-from edgar.api.edgar_txt_file_parser import EdgarTxtFileParser
+from ..api.edgar_api_base import EdgarApiBase
+from ..api.edgar_txt_fetcher import EdgarTxtFetcher
+from ..api.edgar_txt_file_parser import EdgarTxtFileParser
 from datetime import datetime
 import pandas as pd
 
-class EdgarApiController:
+class EdgarApiService:
     def __init__(self):
         self.edgar_api_base = EdgarApiBase()
         self.edgar_txt_fetcher = EdgarTxtFetcher()
@@ -26,6 +26,8 @@ class EdgarApiController:
             all_transactions.extend(non_derivative_transactions_with_general_info)
 
         df = pd.DataFrame(all_transactions)
-        df["date_pulled_from_edgar"] = datetime.now
-        df.to_excel("output.xlsx")
-        return df
+        today = datetime.today().strftime('%Y-%m-%d')
+        df["date_pulled_from_edgar"] = today
+        output_file_name = f"output_{today}.xlsx"
+        df.to_excel(output_file_name)
+        return {"df": df, "output_file_name": output_file_name}
