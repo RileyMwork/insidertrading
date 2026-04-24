@@ -1,1 +1,26 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.env
+.venv
+venv/
+
+# Dependency files
+Pipfile.lock
+
+# Databases
+*.db
+
+# Editor
+.vscode/
+
+# OS files
+.DS_Store
+
+# Data files
+*.xlsx
+
+# Personal notes
 todo.md
