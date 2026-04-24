@@ -15,7 +15,10 @@ class Statements(DbConnect):
     def insert_all_from_df(self, df):
         conn = self.connect()
         inserted_rows = df.to_sql("insider_transactions", conn, if_exists="append", index=False)
-        print(inserted_rows)
+        if inserted_rows:
+            print(inserted_rows)
+        else:
+            print("No Rows Inserted")
         return inserted_rows
     
     

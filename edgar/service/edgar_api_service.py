@@ -28,6 +28,18 @@ class EdgarApiService:
         df = pd.DataFrame(all_transactions)
         today = datetime.today().strftime('%Y-%m-%d')
         df["date_pulled_from_edgar"] = today
+        bool_map = {
+                1: True, 0: False,
+                "1": True, "0": False,
+                True: True, False: False,
+                "True": True, "False": False,
+                "true": True, "false": False,
+            }
+        cols = ["isDirector", "isOfficer", "isTenPercentOwner", "isOther"]
+        df[cols] = (df[cols].replace(bool_map).fillna(False).astype(bool))
+        df["transaction_shares"] = pd.to_numeric(df["transaction_shares"], errors="coerce").fillna(0)
+        df["transaction_price_per_share"] = pd.to_numeric(df["transaction_price_per_share"], errors="coerce").fillna(0)
+        df["total_transaction_cost"] = df["transaction_shares"] * df["transaction_price_per_share"]
         output_file_name = f"output_{today}.xlsx"
-        df.to_excel(output_file_name)
+        df.to_excel(f"edgar/resources/excel_files/{output_file_name}")
         return {"df": df, "output_file_name": output_file_name}

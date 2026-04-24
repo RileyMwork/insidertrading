@@ -18,4 +18,4 @@ class EdgarApiController:
             edgar_transactions = self.edgar_api_service.get_edgar_df()
             df = edgar_transactions["df"]
             self.statements.insert_all_from_df(df)
-            return edgar_transactions["output_file_name"]
+            return df
