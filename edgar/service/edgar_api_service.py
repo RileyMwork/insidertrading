@@ -41,5 +41,4 @@ class EdgarApiService:
         df["transaction_price_per_share"] = pd.to_numeric(df["transaction_price_per_share"], errors="coerce").fillna(0)
         df["total_transaction_cost"] = df["transaction_shares"] * df["transaction_price_per_share"]
         output_file_name = f"output_{today}.xlsx"
-        df.to_excel(f"edgar/resources/excel_files/{output_file_name}")
         return {"df": df, "output_file_name": output_file_name}
