@@ -10,6 +10,7 @@ class EdgarApiController:
         self.statements = Statements()
 
     def get_most_recent_transactions(self):
+        self.statements.create_table();
         most_recent_pull_date = self.statements.get_latest_pull_date()
         today = datetime.today().strftime('%Y-%m-%d')
         if most_recent_pull_date == today:
@@ -20,7 +21,6 @@ class EdgarApiController:
             edgar_transactions = self.edgar_api_service.get_edgar_df()
             df = edgar_transactions["df"]
             full_df = self.map_sic_codes(df)
-            self.statements.create_table();
             self.statements.insert_all_from_df(full_df)
             output_file_name = f"output_{today}.xlsx"
             full_df.to_excel(f"edgar/resources/excel_files/{output_file_name}")
