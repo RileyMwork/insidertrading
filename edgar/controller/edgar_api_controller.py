@@ -20,6 +20,7 @@ class EdgarApiController:
             edgar_transactions = self.edgar_api_service.get_edgar_df()
             df = edgar_transactions["df"]
             full_df = self.map_sic_codes(df)
+            self.statements.create_table();
             self.statements.insert_all_from_df(full_df)
             output_file_name = f"output_{today}.xlsx"
             full_df.to_excel(f"edgar/resources/excel_files/{output_file_name}")
