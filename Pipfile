@@ -9,6 +9,7 @@ requests = "*"
 pandas = "*"
 lxml = "*"
 openpyxl = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

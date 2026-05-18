@@ -1,15 +1,24 @@
-from datetime import datetime, timedelta, timezone
+import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
 from .base_api_client import BaseApiClient
 from .rate_limiter import RateLimiter
 
+load_dotenv()
 
 class EdgarApiBase(BaseApiClient):
     BASE_URL = "https://www.sec.gov/Archives/edgar/daily-index"
 
     def __init__(self):
+        user_agent = os.getenv("SEC_USER_AGENT")
+
+        if not user_agent:
+            raise ValueError(
+                "SEC_USER_AGENT environment variable is not set."
+            )
+
         super().__init__(
-            "Riley Martin rileymartin523@gmail.com",
-            # 1 / 3 works well
+            user_agent,
             rate_limiter=RateLimiter(rate_per_sec=2 / 3),
         )
 

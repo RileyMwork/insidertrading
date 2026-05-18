@@ -1,15 +1,26 @@
+import os
 import requests
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from .rate_limiter import RateLimiter
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class EdgarTxtFetcher:
     def __init__(self, rate_per_sec=1):
         self.session = requests.Session()
+        user_agent = os.getenv("SEC_USER_AGENT")
+
+        if not user_agent:
+            raise ValueError(
+                "SEC_USER_AGENT environment variable is not set."
+            )
+
         self.session.headers.update({
-            "User-Agent": "Riley Martin rileymartin523@gmail.com",
+            "User-Agent": user_agent,
         })
 
         retries = Retry(
