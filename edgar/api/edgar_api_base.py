@@ -9,7 +9,8 @@ class EdgarApiBase(BaseApiClient):
     def __init__(self):
         super().__init__(
             "Riley Martin rileymartin523@gmail.com",
-            rate_limiter=RateLimiter(rate_per_sec=1 / 3),
+            # 1 / 3 works well
+            rate_limiter=RateLimiter(rate_per_sec=2 / 3),
         )
 
     def get_last_business_day(self):

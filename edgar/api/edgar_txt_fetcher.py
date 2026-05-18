@@ -54,7 +54,8 @@ class EdgarTxtFetcher:
                 self.failed += 1
             return url, None
 
-    def fetch_all(self, urls, max_workers=5):
+    # 5 max workers works well
+    def fetch_all(self, urls, max_workers=10):
         results = []
         total = len(urls)
     
