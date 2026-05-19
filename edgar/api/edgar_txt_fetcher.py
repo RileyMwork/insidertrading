@@ -4,7 +4,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from .rate_limiter import RateLimiter
+from infrastructure.api.rate_limiter import RateLimiter
 from dotenv import load_dotenv
 
 load_dotenv()

@@ -1,5 +1,5 @@
 from ..service.edgar_api_service import EdgarApiService
-from ..repository.statements import Statements
+from infrastructure.repository.statements import Statements
 from pathlib import Path
 from datetime import datetime
 import pandas as pd
@@ -25,10 +25,14 @@ class EdgarApiController:
             return full_df
         
     def map_sic_codes(self, df):
-        base_dir = Path(__file__).resolve().parent.parent
-        csv_path = base_dir / "resources" / "sic_codes_mapped.csv"
-    
-        print(csv_path)  # optional debug
+        project_root = Path(__file__).resolve().parent.parent.parent
+
+        csv_path = (
+            project_root
+            / "infrastructure"
+            / "resources"
+            / "sic_codes_mapped.csv"
+        )
     
         other_df = pd.read_csv(csv_path)
     

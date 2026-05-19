@@ -1,8 +1,8 @@
 import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from .base_api_client import BaseApiClient
-from .rate_limiter import RateLimiter
+from infrastructure.api.base_api_client import BaseApiClient
+from infrastructure.api.rate_limiter import RateLimiter
 
 load_dotenv()
 
