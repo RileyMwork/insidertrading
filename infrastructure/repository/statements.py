@@ -2,7 +2,7 @@ from .db_connect import DbConnect
 
 class Statements(DbConnect):
     def __init__(self):
-        super().__init__()
+        super().__init__("edgar.py")
 
     def get_latest_pull_date(self):
         conn = self.connect()
