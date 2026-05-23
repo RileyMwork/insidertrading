@@ -10,6 +10,7 @@ pandas = "*"
 lxml = "*"
 openpyxl = "*"
 python-dotenv = "*"
+alpaca-py = "*"
 
 [dev-packages]
 
