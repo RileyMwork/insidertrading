@@ -1,16 +1,19 @@
+import os
 import sqlite3
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class DbConnect:
-    def __init__(self, db_name):
-        self.db_name = db_name
+    def __init__(self):
+        self.db_name = os.getenv("DB_NAME")
         self.base_dir = Path(__file__).resolve().parent.parent
 
         self.resources_dir = self.base_dir / "resources"
         self.resources_dir.mkdir(exist_ok=True)
 
-        self.db_path = self.resources_dir / db_name
+        self.db_path = self.resources_dir / self.db_name
 
     def create_db_file_if_not_exists(self):
         if self.db_path.exists():
