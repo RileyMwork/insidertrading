@@ -1,11 +1,8 @@
 import os
-from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from infrastructure.api.base_api_client import BaseApiClient
 from infrastructure.api.rate_limiter import RateLimiter
 from alpaca.trading.client import TradingClient
-from alpaca.trading.requests import GetAssetsRequest
-from alpaca.trading.enums import AssetClass
 
 load_dotenv()
 
@@ -34,14 +31,3 @@ class AlpacaApiBase(BaseApiClient):
             self.base_url = self.BASE_PAPER_URL
         else:
             self.base_url = self.BASE_REAL_URL
-
-# put in their own classes 
-    # def get_account(self):
-    #     account = self.trading_client.get_account()
-    #     return account
-    
-    # def get_assets(self):
-    #     search_params = GetAssetsRequest(asset_class=AssetClass.US_EQUITY)
-    #     assets = self.trading_client.get_all_assets(search_params)
-    #     return assets
-
