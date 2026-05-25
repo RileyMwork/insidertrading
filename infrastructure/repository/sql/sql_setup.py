@@ -1,10 +1,10 @@
-from db_connect import DbConnect
+from ..db_connect import DbConnect
 
 class SQLSetup(DbConnect):
     def __init__(self):
         super().__init__()
 
-    def create_edgar_table(self):
+    def create_edgar_insider_transactions_table(self):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute("""
