@@ -25,5 +25,6 @@ Pipfile.lock
 
 # Personal notes
 todo.md
+**/todo.md/**
 
 **/resources/excel_files/**
