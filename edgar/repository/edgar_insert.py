@@ -5,6 +5,6 @@ class EdgarInsert(InsertBase):
         super().__init__()
 
     def insert_all_transactions(self, df):
-        inserted_rows = self.insert_all_from_df(df, "edgar_insider_transactions")
+        inserted_rows = self.insert_all_from_df(df, "insider_transactions")
 
         return inserted_rows
