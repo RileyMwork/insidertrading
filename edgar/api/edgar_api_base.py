@@ -23,7 +23,7 @@ class EdgarApiBase(BaseApiClient):
         )
 
     def get_last_business_day(self):
-        d = datetime.now().date() #- timedelta(days=1)
+        d = datetime.now().date() - timedelta(days=1)
         while d.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
             d -= timedelta(days=1)
         return d
