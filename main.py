@@ -4,6 +4,7 @@ from edgar.controller.edgar_api_controller import EdgarApiController
 from edgar.repository.edgar_select import EdgarSelect
 from alpaca_api.trading.orders.alpaca_orders_base import AlpacaOrdersBase
 from alpaca.trading.enums import OrderClass, OrderSide, OrderType, TimeInForce
+from alpaca_api.market.alpaca_market_base import AlpacaMarketBase
 import pandas as pd
 
 edgar_api_controller = EdgarApiController()
@@ -25,22 +26,19 @@ symbol = top_row["issuerTradingSymbol"]
 transaction_code = top_row["transaction_code"]
 print(symbol)
 
-# import yfinance as yf
+market = AlpacaMarketBase()
+price = market.get_latest_price(symbol)
 
-# ticker = yf.Ticker(symbol)
+alpaca_orders = AlpacaOrdersBase()
 
-# price = ticker.fast_info["last_price"]
+max_investment = 1000
 
-# alpaca_orders = AlpacaOrdersBase()
+qty = max_investment // price
 
-# max_investment = 1000
-
-# qty = max_investment // price
-
-# if transaction_code == "S":
-#     alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
-# if transaction_code == "P":
-#     alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
+if transaction_code == "S":
+    alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
+if transaction_code == "P":
+    alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
 
 
 # ---------------- EDGAR -----------------
@@ -88,3 +86,4 @@ print(symbol)
 # print(open_position)
 
 # ---------------- ALPACA -----------------
+

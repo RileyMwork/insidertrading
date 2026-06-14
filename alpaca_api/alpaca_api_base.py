@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from infrastructure.api.base_api_client import BaseApiClient
 from infrastructure.api.rate_limiter import RateLimiter
 from alpaca.trading.client import TradingClient
+from alpaca.data.historical import StockHistoricalDataClient
 
 load_dotenv()
 
@@ -14,9 +15,9 @@ class AlpacaApiBase(BaseApiClient):
         user_agent = os.getenv("SEC_USER_AGENT")
         api_key = os.getenv("ALPACA_API_KEY")
         api_secret = os.getenv("ALPACA_API_SECRET")
-        self. trading_client = TradingClient(api_key, api_secret)
-
         self.use_paper = use_paper
+        self.trading_client = TradingClient(api_key, api_secret, paper=use_paper)
+        self.historical_data_client = StockHistoricalDataClient(api_key, api_secret)
 
         if not user_agent:
             raise ValueError(
