@@ -25,22 +25,22 @@ symbol = top_row["issuerTradingSymbol"]
 transaction_code = top_row["transaction_code"]
 print(symbol)
 
-import yfinance as yf
+# import yfinance as yf
 
-ticker = yf.Ticker(symbol)
+# ticker = yf.Ticker(symbol)
 
-price = ticker.fast_info["last_price"]
+# price = ticker.fast_info["last_price"]
 
-alpaca_orders = AlpacaOrdersBase()
+# alpaca_orders = AlpacaOrdersBase()
 
-max_investment = 1000
+# max_investment = 1000
 
-qty = max_investment // price
+# qty = max_investment // price
 
-if transaction_code == "S":
-    alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
-if transaction_code == "P":
-    alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
+# if transaction_code == "S":
+#     alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
+# if transaction_code == "P":
+#     alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
 
 
 # ---------------- EDGAR -----------------
