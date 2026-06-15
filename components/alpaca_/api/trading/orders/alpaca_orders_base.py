@@ -1,10 +1,12 @@
-from alpaca_api.alpaca_api_base import AlpacaApiBase
+from components.alpaca_.api.alpaca_api_base import AlpacaApiBase
 from alpaca.trading.requests import LimitOrderRequest, LimitOrderRequest, MarketOrderRequest, StopLossRequest, TakeProfitRequest, TrailingStopOrderRequest
 from alpaca.trading.enums import OrderClass, OrderSide, OrderType, TimeInForce
+from components.alpaca_.repository.alpaca_insert import AlpacaInsert
 
 class AlpacaOrdersBase(AlpacaApiBase):
     def __init__(self):
         super().__init__()
+        self.alpaca_insert = AlpacaInsert()
 
     def basic_order(self, ticker, qty, side, time_in_force=TimeInForce.GTC, client_order_id=None):
 
@@ -54,6 +56,10 @@ class AlpacaOrdersBase(AlpacaApiBase):
         bracket_order = self.trading_client.submit_order(
                 order_data=bracket__order_data
             )
+        
+        self.alpaca_insert.insert_new_order_info([ticker, bracket_order.created_at, bracket_order.expires_at, "bracket", 
+                                                bracket_order.side, bracket_order.time_in_force, qty, bracket_order.filled_qty, 
+                                                bracket_order.filled_avg_price, take_profit_price, stop_loss_price, None])
         
         return bracket_order
     

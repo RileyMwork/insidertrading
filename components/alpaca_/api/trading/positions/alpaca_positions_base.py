@@ -1,4 +1,4 @@
-from alpaca_api.alpaca_api_base import AlpacaApiBase
+from components.alpaca_.api.alpaca_api_base import AlpacaApiBase
 from alpaca.trading.requests import GetAssetsRequest
 from alpaca.trading.enums import AssetClass, AssetStatus
 

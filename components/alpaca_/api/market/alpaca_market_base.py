@@ -1,4 +1,4 @@
-from alpaca_api.alpaca_api_base import AlpacaApiBase
+from components.alpaca_.api.alpaca_api_base import AlpacaApiBase
 from alpaca.data.requests import StockLatestTradeRequest
 
 class AlpacaMarketBase(AlpacaApiBase):

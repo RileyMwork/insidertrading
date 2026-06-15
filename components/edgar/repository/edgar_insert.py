@@ -1,4 +1,4 @@
-from infrastructure.repository.sql.insert.insert_base import InsertBase
+from components.infrastructure.repository.sql.insert.insert_base import InsertBase
 
 class EdgarInsert(InsertBase):
     def __init__(self):

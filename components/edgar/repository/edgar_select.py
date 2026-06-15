@@ -1,4 +1,4 @@
-from infrastructure.repository.sql.select.select_base import SelectBase
+from components.infrastructure.repository.sql.select.select_base import SelectBase
 
 class EdgarSelect(SelectBase):
     def __init__(self):

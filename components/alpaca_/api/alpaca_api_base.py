@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
-from infrastructure.api.base_api_client import BaseApiClient
-from infrastructure.api.rate_limiter import RateLimiter
+from components.infrastructure.api.base_api_client import BaseApiClient
+from components.infrastructure.api.rate_limiter import RateLimiter
 from alpaca.trading.client import TradingClient
 from alpaca.data.historical import StockHistoricalDataClient
 

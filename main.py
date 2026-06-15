@@ -1,10 +1,10 @@
 # ---------------- EDGAR -----------------
 
-from edgar.controller.edgar_api_controller import EdgarApiController
-from edgar.repository.edgar_select import EdgarSelect
-from alpaca_api.trading.orders.alpaca_orders_base import AlpacaOrdersBase
+from components.edgar.controller.edgar_api_controller import EdgarApiController
+from components.edgar.repository.edgar_select import EdgarSelect
+from components.alpaca_.api.trading.orders.alpaca_orders_base import AlpacaOrdersBase
 from alpaca.trading.enums import OrderClass, OrderSide, OrderType, TimeInForce
-from alpaca_api.market.alpaca_market_base import AlpacaMarketBase
+from components.alpaca_.api.market.alpaca_market_base import AlpacaMarketBase
 import pandas as pd
 
 edgar_api_controller = EdgarApiController()
