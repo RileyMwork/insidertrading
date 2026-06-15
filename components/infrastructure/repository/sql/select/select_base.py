@@ -32,3 +32,12 @@ class SelectBase(DbConnect):
 
         print(f"Selected Data: {row}")
         return row          
+    
+    def select_raw(self, sql):
+        cursor = self.conn.cursor()
+        cursor.execute(sql)
+    
+        rows = cursor.fetchall()
+        columns = [col[0] for col in cursor.description]
+    
+        return rows, columns

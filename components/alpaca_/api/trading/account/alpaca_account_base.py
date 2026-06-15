@@ -1,4 +1,4 @@
-from alpaca_.api.alpaca_api_base import AlpacaApiBase
+from components.alpaca_.api.alpaca_api_base import AlpacaApiBase
 
 class AlpacaAccountBase(AlpacaApiBase):
     def __init__(self):

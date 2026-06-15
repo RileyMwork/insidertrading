@@ -11,6 +11,7 @@ lxml = "*"
 openpyxl = "*"
 python-dotenv = "*"
 alpaca-py = "*"
+yfinance = "*"
 
 [dev-packages]
 
