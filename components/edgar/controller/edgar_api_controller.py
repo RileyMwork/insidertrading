@@ -13,23 +13,102 @@ class EdgarApiController:
         self.insert_statements = EdgarInsert()
         self.select_statements = EdgarSelect()
 
+    def get_transactions(self, start_date=None, end_date=None):
+
+        txt_link_lists = self.edgar_api_service.get_filings_txt_links(
+            start_date,
+            end_date
+        )
+
+        all_dfs = []
+
+        print(f"Processing {len(txt_link_lists)} trading days")
+
+        for day_num, txt_link_list in enumerate(
+            txt_link_lists,
+            start=1
+        ):
+            print(
+                f"Day {day_num}: "
+                f"{len(txt_link_list)} Form 4 filings"
+            )
+
+            if not txt_link_list:
+                print("No filings found")
+                continue
+
+            txt_files = self.edgar_api_service.get_txt_files(
+                txt_link_list
+            )
+
+            parsed_data = self.edgar_api_service.get_parsed_data(
+                txt_files
+            )
+
+            if not parsed_data:
+                print("No transactions parsed")
+                continue
+
+            df = self.edgar_api_service.persist_parsed_data_df_to_sql(
+                parsed_data
+            )
+
+            full_df = self.map_sic_codes(df)
+
+            self.insert_statements.insert_all_transactions(
+                full_df
+            )
+
+            print(
+                f"Inserted {len(full_df)} transactions"
+            )
+
+            all_dfs.append(full_df)
+
+        if all_dfs:
+            return pd.concat(
+                all_dfs,
+                ignore_index=True
+            )
+
+        return pd.DataFrame()
+
     def get_most_recent_transactions(self):
 
         self.sql_setup.create_edgar_insider_transactions_table()
-        most_recent_pull_date = self.select_statements.get_latest_pull_date()
+
+        most_recent_pull_date = (
+            self.select_statements.get_latest_pull_date()
+        )
+
         today = datetime.today().strftime('%Y-%m-%d')
+
         if most_recent_pull_date == today:
-            print("Most Recent Files Already Pulled, Aborting...")
+            print(
+                "Most Recent Files Already Pulled, Aborting..."
+            )
             return
-        else:
-            print(f"Pulling Files For {today}")
-            df = self.edgar_api_service.get_edgar_df()
-            full_df = self.map_sic_codes(df)
-            self.insert_statements.insert_all_transactions(full_df)
-            return full_df
-        
+
+        print(f"Pulling Files For {today}")
+
+        df = self.edgar_api_service.get_recent_edgar_df()
+
+        full_df = self.map_sic_codes(df)
+
+        self.insert_statements.insert_all_transactions(
+            full_df
+        )
+
+        return full_df
+
     def map_sic_codes(self, df):
-        project_root = Path(__file__).resolve().parent.parent.parent
+        project_root = (
+            Path(__file__)
+            .resolve()
+            .parent
+            .parent
+            .parent
+        )
 
         csv_path = (
             project_root
@@ -37,19 +116,25 @@ class EdgarApiController:
             / "resources"
             / "sic_codes_mapped.csv"
         )
-    
+
         other_df = pd.read_csv(csv_path)
-    
-        other_df["ticker"] = other_df["ticker"].str.strip("[]'")
-        other_df = other_df[["ticker", "sic", "industry"]]
-    
+
+        other_df["ticker"] = (
+            other_df["ticker"]
+            .str.strip("[]'")
+        )
+
+        other_df = other_df[
+            ["ticker", "sic", "industry"]
+        ]
+
         merged = df.merge(
             other_df,
             left_on="issuerTradingSymbol",
             right_on="ticker",
             how="left"
         )
-    
+
         merged = merged.drop(columns=["ticker"])
-    
+
         return merged

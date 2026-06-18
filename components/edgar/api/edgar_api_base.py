@@ -1,5 +1,5 @@
+from datetime import date, datetime, timedelta
 import os
-from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from components.infrastructure.api.base_api_client import BaseApiClient
 from components.infrastructure.api.rate_limiter import RateLimiter
@@ -24,7 +24,7 @@ class EdgarApiBase(BaseApiClient):
 
     def get_last_business_day(self):
         d = datetime.now().date() - timedelta(days=1)
-        while d.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
+        while d.weekday() >= 5:
             d -= timedelta(days=1)
         return d
 
@@ -35,18 +35,22 @@ class EdgarApiBase(BaseApiClient):
     def _build_index_url(self, date):
         year, quarter = self._get_year_and_quarter(date)
         date_str = date.strftime("%Y%m%d")
-        print()
         return f"{self.BASE_URL}/{year}/{quarter}/master.{date_str}.idx"
 
-    def get_recent_filings_txt_links(self):
+    def get_recent_filings_endpoint(self):
         date = self.get_last_business_day()
-        url = self._build_index_url(date)
-        print(url)
-        response = self.get(url)
+        return self._build_index_url(date)
+
+    def get_filings_txt_links(self, bulk_link):
+        response = self.get(bulk_link)
+
         if not response or response.status_code != 200:
             return []
 
-        return self._extract_form_links(response.text.splitlines(), form_type="4")
+        return self._extract_form_links(
+            response.text.splitlines(),
+            form_type="4"
+        )
 
     def _extract_form_links(self, lines, form_type=None):
         results = []
@@ -60,6 +64,30 @@ class EdgarApiBase(BaseApiClient):
             if form_type and f_type != form_type:
                 continue
 
-            results.append(f"https://www.sec.gov/Archives/{file_path}")
+            results.append(
+                f"https://www.sec.gov/Archives/{file_path}"
+            )
 
         return results
+
+    def get_filing_links_by_date_range(self, start_date, end_date):
+        current = start_date
+        urls = []
+
+        while current <= end_date:
+
+            # Skip weekends
+            if current.weekday() < 5:
+                quarter = (current.month - 1) // 3 + 1
+
+                url = (
+                    f"https://www.sec.gov/Archives/edgar/daily-index/"
+                    f"{current.year}/QTR{quarter}/"
+                    f"master.{current.strftime('%Y%m%d')}.idx"
+                )
+
+                urls.append(url)
+
+            current += timedelta(days=1)
+
+        return urls

@@ -1,44 +1,44 @@
 # ---------------- EDGAR -----------------
 
-from components.edgar.controller.edgar_api_controller import EdgarApiController
-from components.edgar.repository.edgar_select import EdgarSelect
-from components.alpaca_.api.trading.orders.alpaca_orders_base import AlpacaOrdersBase
-from alpaca.trading.enums import OrderClass, OrderSide, OrderType, TimeInForce
-from components.alpaca_.api.market.alpaca_market_base import AlpacaMarketBase
-import pandas as pd
+# from components.edgar.controller.edgar_api_controller import EdgarApiController
+# from components.edgar.repository.edgar_select import EdgarSelect
+# from components.alpaca_.api.trading.orders.alpaca_orders_base import AlpacaOrdersBase
+# from alpaca.trading.enums import OrderClass, OrderSide, OrderType, TimeInForce
+# from components.alpaca_.api.market.alpaca_market_base import AlpacaMarketBase
+# import pandas as pd
 
-edgar_api_controller = EdgarApiController()
-info = edgar_api_controller.get_most_recent_transactions()
+# edgar_api_controller = EdgarApiController()
+# info = edgar_api_controller.get_most_recent_transactions()
 
-edgar_select = EdgarSelect()
-rows, columns = edgar_select.get_latest_data()
-df = pd.DataFrame(rows, columns=columns)
+# edgar_select = EdgarSelect()
+# rows, columns = edgar_select.get_latest_data()
+# df = pd.DataFrame(rows, columns=columns)
 
-counts = (
-    df[["issuerTradingSymbol", "transaction_code", "transaction_date"]]
-    .value_counts()
-    .reset_index(name="count")
-)
+# counts = (
+#     df[["issuerTradingSymbol", "transaction_code", "transaction_date"]]
+#     .value_counts()
+#     .reset_index(name="count")
+# )
 
-top_row = counts.iloc[0]
+# top_row = counts.iloc[0]
 
-symbol = top_row["issuerTradingSymbol"]
-transaction_code = top_row["transaction_code"]
-print(symbol)
+# symbol = top_row["issuerTradingSymbol"]
+# transaction_code = top_row["transaction_code"]
+# print(symbol)
 
-market = AlpacaMarketBase()
-price = market.get_latest_price(symbol)
+# market = AlpacaMarketBase()
+# price = market.get_latest_price(symbol)
 
-alpaca_orders = AlpacaOrdersBase()
+# alpaca_orders = AlpacaOrdersBase()
 
-max_investment = 1000
+# max_investment = 1000
 
-qty = max_investment // price
+# qty = max_investment // price
 
-if transaction_code == "S":
-    alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
-if transaction_code == "P":
-    alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
+# if transaction_code == "S":
+#     alpaca_orders.bracket_order(symbol, qty, OrderSide.SELL, round(price * 0.93, 2), round(price * 1.03, 2), TimeInForce.GTC)
+# if transaction_code == "P":
+#     alpaca_orders.bracket_order(symbol, qty, OrderSide.BUY, round(price * 1.07, 2), round(price * 0.97, 2), TimeInForce.GTC)
 
 
 # ---------------- EDGAR -----------------
@@ -87,3 +87,24 @@ if transaction_code == "P":
 
 # ---------------- ALPACA -----------------
 
+
+
+# from components.edgar.service.edgar_api_service import EdgarApiService
+# from datetime import date, datetime
+
+# edgar_service = EdgarApiService()
+# txt_links_list = edgar_service.get_filings_txt_links(date(2026, 6, 9), date(2026, 6, 10))
+# txt_files = edgar_service.get_txt_files(txt_links_list)
+# parsed_data = edgar_service.get_parsed_data(txt_files)
+
+# print(txt_files)
+# print(parsed_data)
+
+from components.edgar.controller.edgar_api_controller import EdgarApiController
+from datetime import date, datetime
+
+edgar_api_controller = EdgarApiController()
+transactions = edgar_api_controller.get_transactions(date(2026, 6, 1), date(2026, 6, 4))
+# transactions = edgar_api_controller.get_transactions()
+print(transactions)
+print(len(transactions))
