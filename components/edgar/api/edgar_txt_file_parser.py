@@ -1,8 +1,17 @@
+from datetime import datetime
 import xml.etree.ElementTree as ET
 
 class EdgarTxtFileParser:
     def __init__(self):
         pass
+
+    def get_txt_field(self, txt_file, field_name):
+        for line in txt_file.splitlines():
+            if line.strip().startswith(field_name):
+                filed_date_raw = line.split(":", 1)[1].strip()
+                filed_date = datetime.strptime(filed_date_raw, "%Y%m%d").date().isoformat()
+                return filed_date
+        return None
 
     def convert_txt_to_xml(self, txt_file):
         start_tag = "<XML>"
@@ -14,6 +23,7 @@ class EdgarTxtFileParser:
         if start != -1 and end != -1:
             xml_string = txt_file[start + len(start_tag):end].strip()
             return xml_string
+    
         
     def parse_xml_by_parent_tag(self, xml_string, parent_tag_list):
         info  = {}

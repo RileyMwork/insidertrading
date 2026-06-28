@@ -100,11 +100,8 @@
 # print(txt_files)
 # print(parsed_data)
 
-from components.edgar.controller.edgar_api_controller import EdgarApiController
-from datetime import date, datetime
+from components.edgar.edgar_main import EdgarMain
 
-edgar_api_controller = EdgarApiController()
-transactions = edgar_api_controller.get_transactions(date(2026, 6, 1), date(2026, 6, 4))
-# transactions = edgar_api_controller.get_transactions()
-print(transactions)
-print(len(transactions))
+edgar_main = EdgarMain()
+df = edgar_main.get_most_recent_transactions()
+# df = edgar_main.get_transactions(2024, 1, 1, 2026, 1, 1)

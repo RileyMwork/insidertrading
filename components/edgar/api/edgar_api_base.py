@@ -70,24 +70,32 @@ class EdgarApiBase(BaseApiClient):
 
         return results
 
-    def get_filing_links_by_date_range(self, start_date, end_date):
+    from datetime import timedelta
+
+    def get_filing_links_by_date_range(self, start_date, end_date, dates_to_exclude):
         current = start_date
         urls = []
-
+    
+        # Convert to set for O(1) lookup (important for performance)
+        exclude_set = set(dates_to_exclude)
+    
         while current <= end_date:
-
-            # Skip weekends
-            if current.weekday() < 5:
+        
+            date_str = current.strftime("%Y-%m-%d")  # match your DB format
+    
+            # Skip weekends + excluded dates
+            if current.weekday() < 5 and date_str not in exclude_set:
+            
                 quarter = (current.month - 1) // 3 + 1
-
+    
                 url = (
                     f"https://www.sec.gov/Archives/edgar/daily-index/"
                     f"{current.year}/QTR{quarter}/"
                     f"master.{current.strftime('%Y%m%d')}.idx"
                 )
-
+    
                 urls.append(url)
-
+    
             current += timedelta(days=1)
-
+    
         return urls

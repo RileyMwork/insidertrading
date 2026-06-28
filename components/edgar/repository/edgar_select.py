@@ -1,3 +1,4 @@
+import datetime
 from components.infrastructure.repository.sql.select.select_base import SelectBase
 
 class EdgarSelect(SelectBase):
@@ -19,5 +20,13 @@ class EdgarSelect(SelectBase):
         sql = f"SELECT * FROM {self.table_name} WHERE date_pulled_from_edgar = (SELECT MAX(date_pulled_from_edgar) FROM {self.table_name});"
         rows, columns = self.select_raw(sql)
         return rows, columns
+    
+    def get_data_by_date(self, date):
+        date = datetime.strptime(date, "%Y%m%d").date().isoformat()
+        return self.select("*", self.table_name, "date_pulled_from_edgar", where_params=(date), limit=1)
+    
+    def get_all_distinct_filed_dates(self):
+        rows, columns = self.select_raw("SELECT DISTINCT filed_date FROM insider_transactions ORDER BY filed_date DESC")
+        return [row[0] for row in rows]
 
 
