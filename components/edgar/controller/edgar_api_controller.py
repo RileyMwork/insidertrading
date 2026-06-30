@@ -1,8 +1,6 @@
-from datetime import datetime, timedelta
 from ..service.edgar_api_service import EdgarApiService
 from components.infrastructure.repository.sql.sql_setup import SQLSetup
 from components.edgar.repository.edgar_insert import EdgarInsert
-from components.edgar.repository.edgar_select import EdgarSelect
 from pathlib import Path
 import pandas as pd
 
