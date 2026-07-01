@@ -12,6 +12,7 @@ openpyxl = "*"
 python-dotenv = "*"
 alpaca-py = "*"
 yfinance = "*"
+pytest = "*"
 
 [dev-packages]
 
