@@ -32,3 +32,5 @@ todo.md
 # Tests
 test
 tests/
+.pytest_cache
+.pytest_cache/
