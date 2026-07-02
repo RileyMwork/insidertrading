@@ -1,9 +1,8 @@
 from ...db_connect import DbConnect
 
 class SelectBase(DbConnect):
-    def __init__(self):
-        super().__init__()
-        self.conn = self.connect()
+    def __init__(self, conn=None):
+        super().__init__(conn)
 
     def select(self, select_columns : list[str], table_name : str, where_columns : list[str] = [], where_values : list = [], 
                 order_by_column = None, order_by_direction : str | None = None, limit : int | None = None) -> tuple:

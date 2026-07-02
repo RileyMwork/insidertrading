@@ -1,4 +1,4 @@
-from components.edgar.repository.insider_transaction_repository import InsiderTransactionRepository
+from main.components.edgar.repository.insider_transaction_repository import InsiderTransactionRepository
 from ..service.edgar_service import EdgarService
 import pandas as pd
 

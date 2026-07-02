@@ -84,7 +84,7 @@ class TargetFileParser:
                 "transaction_date": self.get_text(tx, "transactionDate/value"),
                 "transaction_form_type": self.get_text(tx, "transactionCoding/transactionFormType"),
                 "transaction_code": self.get_text(tx, "transactionCoding/transactionCode"),
-                "equity_swap_involved": self.get_text(tx, "transactionCoding/equitySwapInvloved"),
+                "equity_swap_involved": self.get_text(tx, "transactionCoding/equitySwapInvolved"),
                 "transaction_shares": self.get_text(tx, "transactionAmounts/transactionShares/value"),
                 "transaction_price_per_share": self.get_text(tx, "transactionAmounts/transactionPricePerShare/value"),
                 "transaction_acquired_disposed_code": self.get_text(tx, "transactionAmounts/transactionAcquiredDisposedCode/value"),

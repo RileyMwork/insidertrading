@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class DbConnect:
-    def __init__(self):
+    def __init__(self, conn=None):
         self.db_name = os.getenv("DB_NAME")
         self.base_dir = Path(__file__).resolve().parent.parent
 
@@ -14,6 +14,8 @@ class DbConnect:
         self.resources_dir.mkdir(exist_ok=True)
 
         self.db_path = self.resources_dir / self.db_name
+
+        self.conn = conn or self.connect()
 
     def create_db_file_if_not_exists(self):
         if self.db_path.exists():

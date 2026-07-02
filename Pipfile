@@ -13,6 +13,7 @@ python-dotenv = "*"
 alpaca-py = "*"
 yfinance = "*"
 pytest = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 

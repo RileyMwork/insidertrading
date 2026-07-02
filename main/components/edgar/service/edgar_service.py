@@ -1,9 +1,9 @@
-from components.edgar.repository.insider_transaction_repository import InsiderTransactionRepository
-from components.infrastructure.api.base_http_client import BaseHttpClient
-from components.edgar.forms.index_link_builder import IndexLinkBuilder
-from components.edgar.forms.target_file_parser import TargetFileParser
-from components.edgar.forms.index_file_parser import IndexFileParser
-from components.infrastructure.api.rate_limiter import RateLimiter
+from main.components.edgar.repository.insider_transaction_repository import InsiderTransactionRepository
+from main.components.infrastructure.api.base_http_client import BaseHttpClient
+from main.components.edgar.forms.index_link_builder import IndexLinkBuilder
+from main.components.edgar.forms.target_file_parser import TargetFileParser
+from main.components.edgar.forms.index_file_parser import IndexFileParser
+from main.components.infrastructure.api.rate_limiter import RateLimiter
 from dotenv import load_dotenv
 import os
 

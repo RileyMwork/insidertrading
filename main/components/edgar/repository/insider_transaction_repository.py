@@ -1,11 +1,12 @@
-from components.infrastructure.repository.sql.select.select_base import SelectBase
-from components.infrastructure.repository.sql.insert.insert_base import InsertBase
+from main.components.infrastructure.repository.sql.select.select_base import SelectBase
+from main.components.infrastructure.repository.sql.insert.insert_base import InsertBase
 from datetime import datetime
 import pandas as pd
 
 class InsiderTransactionRepository(SelectBase, InsertBase):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, conn = None):
+        SelectBase.__init__(self, conn)
+        InsertBase.__init__(self, conn)
         self.table_name = "insider_transactions"
 
     def insert_all_transactions(self, df : pd.DataFrame) -> int:
